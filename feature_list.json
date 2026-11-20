@@ -1,0 +1,61 @@
+{
+  "rules": "Single source of truth for what to build. Work on ONE feature at a time (state 'active'). Never set 'passing' by hand: only `npm run verify -- <id>` may do that. Agents may change state between not_started/active/blocked and edit 'notes'.",
+  "features": [
+    {
+      "id": "F01",
+      "behavior": "User can add an expense (amount, currency, date, description) and sees it in a list on the home page, newest first, persisted in Postgres with userId from getCurrentUser()",
+      "verification": "npm run lint && npm run typecheck && npm test && npm run build && npx playwright test e2e/add-expense.spec.ts",
+      "state": "not_started",
+      "evidence": null,
+      "notes": "Amounts stored as integer minor units + ISO currency code, never floats."
+    },
+    {
+      "id": "F02",
+      "behavior": "Walking skeleton on Azure: Bicep provisions Container App (Easy Auth with Entra ID, restricted to the owner), PostgreSQL Flexible Server, Storage account and Key Vault with managed identity; a CI/CD pipeline builds the Docker image, runs migrations and deploys; the e2e smoke and add-expense tests pass against the deployed URL",
+      "verification": "az bicep build --file infra/main.bicep && E2E_BASE_URL=$APP_URL npx playwright test e2e/smoke.spec.ts e2e/add-expense.spec.ts",
+      "state": "not_started",
+      "evidence": null,
+      "notes": "Open decision before starting: GitHub Actions vs Azure Pipelines (DECISIONS.md D7). E2E against Easy Auth needs a test identity or a bypass for the test run; decide when starting."
+    },
+    {
+      "id": "F03",
+      "behavior": "User can edit and delete an expense; list shows the total for the current month",
+      "verification": "npm run check && npx playwright test e2e/edit-delete-expense.spec.ts",
+      "state": "not_started",
+      "evidence": null,
+      "notes": ""
+    },
+    {
+      "id": "F04",
+      "behavior": "User can attach a receipt image (jpg/png/pdf, max 10 MB) to an expense; it is stored in Blob Storage and can be viewed from the expense",
+      "verification": "npm run check && npx playwright test e2e/receipt-upload.spec.ts",
+      "state": "not_started",
+      "evidence": null,
+      "notes": ""
+    },
+    {
+      "id": "F05",
+      "behavior": "Uploading a receipt runs OCR through a ReceiptParser interface (Azure AI Document Intelligence prebuilt-receipt) and returns amount, currency, date and merchant; fixture receipts in tests/fixtures/receipts parse to their expected values",
+      "verification": "npm run check && npx vitest run src/receipts",
+      "state": "not_started",
+      "evidence": null,
+      "notes": "E2E uses a stub ReceiptParser; the live-service fixture test is opt-in via an env var."
+    },
+    {
+      "id": "F06",
+      "behavior": "Creating an expense from a receipt pre-fills the form with OCR results; the user reviews and corrects the fields before saving",
+      "verification": "npm run check && npx playwright test e2e/expense-from-receipt.spec.ts",
+      "state": "not_started",
+      "evidence": null,
+      "notes": ""
+    },
+    {
+      "id": "F07",
+      "behavior": "Expenses have a category; the list can be filtered by category",
+      "verification": "npm run check && npx playwright test e2e/categories.spec.ts",
+      "state": "not_started",
+      "evidence": null,
+      "notes": ""
+    }
+  ]
+}

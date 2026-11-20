@@ -1,0 +1,29 @@
+# Local stand-ins for the Azure services (see DECISIONS.md D3).
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: expenses
+      POSTGRES_PASSWORD: expenses
+      POSTGRES_DB: expenses
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U expenses -d expenses"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.35.0
+    command: azurite-blob --blobHost 0.0.0.0 --skipApiVersionCheck --loose
+    ports:
+      - "10000:10000"
+    volumes:
+      - azuritedata:/data
+
+volumes:
+  pgdata:
+  azuritedata:
