@@ -24,8 +24,9 @@ Rejected: building auth first (every e2e test would need a login; it's scope cre
 ## D6: Deploy early as F02 (walking skeleton) (2026-11-20)
 Azure problems (identity, networking, migrations, cold start) show up while the app is still tiny.
 
-## D7: CI/CD system (OPEN)
-GitHub Actions or Azure Pipelines. Decide before starting F02.
+## D7: CI/CD via GitHub Actions (2026-11-20)
+Deploy to Azure with OIDC federated credentials (`azure/login`, no stored client secrets). Images go to
+Azure Container Registry. Rejected: Azure Pipelines.
 
 ## D8: OCR via Azure AI Document Intelligence prebuilt-receipt, behind a ReceiptParser interface (2026-11-20)
 It returns structured fields, so we can verify it with fixture receipts. A general vision LLM stays possible as

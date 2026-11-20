@@ -15,7 +15,7 @@
       "verification": "az bicep build --file infra/main.bicep && E2E_BASE_URL=$APP_URL npx playwright test e2e/smoke.spec.ts e2e/add-expense.spec.ts",
       "state": "not_started",
       "evidence": null,
-      "notes": "Open decision before starting: GitHub Actions vs Azure Pipelines (DECISIONS.md D7). E2E against Easy Auth needs a test identity or a bypass for the test run; decide when starting."
+      "notes": "CI/CD: GitHub Actions with OIDC login to Azure, images in ACR (DECISIONS.md D7). Requires a GitHub repo + Entra app registration with federated credential. E2E against Easy Auth needs a test identity or a bypass for the test run; decide when starting."
     },
     {
       "id": "F03",

@@ -20,4 +20,5 @@ Nothing.
 
 ## Next steps
 1. Start F01: write `e2e/add-expense.spec.ts` first, then add the `expenses` table, a server action and the form + list.
-2. Before F02: decide D7 (GitHub Actions vs Azure Pipelines).
+2. Before F02: create a GitHub repo and push; have an Azure subscription/resource group ready plus rights to
+   create an Entra app registration with a federated credential for GitHub OIDC (D7).
