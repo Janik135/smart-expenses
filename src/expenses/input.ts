@@ -17,7 +17,7 @@ export type ParseResult =
   | { ok: false; errors: Partial<Record<ExpenseField, string>> };
 
 function isCalendarDate(s: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  if (!/^(?!0000)\d{4}-\d{2}-\d{2}$/.test(s)) return false;
   const d = new Date(`${s}T00:00:00Z`);
   return !Number.isNaN(d.getTime()) && d.toISOString().startsWith(s);
 }
