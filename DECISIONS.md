@@ -31,3 +31,16 @@ Azure Container Registry. Rejected: Azure Pipelines.
 ## D8: OCR via Azure AI Document Intelligence prebuilt-receipt, behind a ReceiptParser interface (2026-11-20)
 It returns structured fields, so we can verify it with fixture receipts. A general vision LLM stays possible as
 another implementation of the same interface.
+
+## D9: Money input and storage details (2026-11-25)
+`amount_minor` is a Postgres `integer` (max 2,147,483,647 minor units, e.g. about 21 M EUR), which is plenty
+for personal expenses. User input is parsed as a string into minor units using the currency's ISO minor digits
+from `Intl` (EUR 2, JPY 0, KWD 3); too many decimals are rejected, not rounded. Display passes an exact decimal
+string to `Intl.NumberFormat`. The form offers a short currency list, but the server accepts any ISO 4217 code.
+Rejected: `numeric`/`bigint` columns (bigint comes back as a string in node-postgres; not needed at this scale),
+parsing with `parseFloat` (`0.29 * 100` is not 29).
+
+## D10: Expense list order and date type (2026-11-25)
+Newest first means by `spent_on` (the date the user entered) descending, then `created_at` descending.
+`spent_on` is a SQL `date` read as a `YYYY-MM-DD` string, so no timezone shifts. Rejected: ordering by
+`created_at` only (back-dated expenses would show at the top).

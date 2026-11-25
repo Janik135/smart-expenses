@@ -5,8 +5,8 @@
       "id": "F01",
       "behavior": "User can add an expense (amount, currency, date, description) and sees it in a list on the home page, newest first, persisted in Postgres with userId from getCurrentUser()",
       "verification": "npm run lint && npm run typecheck && npm test && npm run build && npx playwright test e2e/add-expense.spec.ts",
-      "state": "not_started",
-      "evidence": null,
+      "state": "passing",
+      "evidence": "PASS 2026-11-25T08:59:07.404Z at 23288b5 (uncommitted changes may apply)",
       "notes": "Amounts stored as integer minor units + ISO currency code, never floats."
     },
     {
