@@ -17,6 +17,7 @@ describe("parseExpenseInput", () => {
     [{ currency: "XYZ" }, "currency"],
     [{ date: "2026-02-30" }, "date"],
     [{ date: "25.11.2026" }, "date"],
+    [{ date: "0000-01-01" }, "date"], // valid for JS Date, but Postgres has no year 0
     [{ description: "   " }, "description"],
     [{ description: "x".repeat(201) }, "description"],
   ])("rejects %j", (override, field) => {
