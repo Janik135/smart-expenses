@@ -34,11 +34,14 @@ another implementation of the same interface.
 
 ## D9: Money input and storage details (2026-11-25)
 `amount_minor` is a Postgres `integer` (max 2,147,483,647 minor units, e.g. about 21 M EUR), which is plenty
-for personal expenses. User input is parsed as a string into minor units using the currency's ISO minor digits
-from `Intl` (EUR 2, JPY 0, KWD 3); too many decimals are rejected, not rounded. Display passes an exact decimal
-string to `Intl.NumberFormat`. The form offers a short currency list, but the server accepts any ISO 4217 code.
+for personal expenses. User input is parsed as a string into minor units using the currency's ISO 4217
+minor digits (EUR 2, JPY 0, KWD 3, IQD 3, HUF 2) from a table of the non-2-digit currencies in `src/lib/money.ts`;
+too many decimals are rejected, not rounded. Display passes an exact decimal string to `Intl.NumberFormat`, forced
+to the same number of digits. The form offers a short currency list, but the server accepts any ISO 4217 code.
 Rejected: `numeric`/`bigint` columns (bigint comes back as a string in node-postgres; not needed at this scale),
-parsing with `parseFloat` (`0.29 * 100` is not 29).
+parsing with `parseFloat` (`0.29 * 100` is not 29), taking the digits from `Intl` (that's CLDR display
+precision, which says 0 for e.g. HUF, COP, IDR and IQD and so differs from the ISO minor units we store).
+The table has to be updated by hand if ISO 4217 changes.
 
 ## D10: Expense list order and date type (2026-11-25)
 Newest first means by `spent_on` (the date the user entered) descending, then `created_at` descending.
