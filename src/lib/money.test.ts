@@ -11,6 +11,8 @@ describe("parseAmountToMinor", () => {
     [" 7.00 ", "EUR", 700],
     ["1500", "JPY", 1500],
     ["1.234", "KWD", 1234],
+    ["1", "IQD", 1000],
+    ["1.234", "IQD", 1234],
     ["0.29", "EUR", 29], // 0.29 * 100 is 28.999999999999996 in floating point
   ])("%s %s -> %i", (input, currency, expected) => {
     expect(parseAmountToMinor(input, currency)).toBe(expected);
@@ -46,5 +48,6 @@ describe("formatMoney", () => {
     expect(formatMoney(5, "USD")).toBe("$0.05");
     expect(formatMoney(150000, "JPY")).toBe("¥150,000");
     expect(formatMoney(1234, "KWD")).toBe("KWD 1.234");
+    expect(formatMoney(1234, "IQD")).toBe("IQD 1.234");
   });
 });
