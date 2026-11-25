@@ -41,10 +41,7 @@ export function isCurrencyCode(code: string): boolean {
 
 /** Number of minor-unit digits of a currency, e.g. EUR 2, JPY 0, KWD 3. */
 export function minorDigits(currency: string): number {
-  const formatter = new Intl.NumberFormat(LOCALE, { style: "currency", currency });
-  const isoDigits = ISO_MINOR_DIGITS[currency];
-  if (isoDigits !== undefined) return isoDigits;
-  return supportedCurrencies.has(currency) ? 2 : formatter.resolvedOptions().maximumFractionDigits ?? 2;
+  return ISO_MINOR_DIGITS[currency] ?? 2;
 }
 
 /**
